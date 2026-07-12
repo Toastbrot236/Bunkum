@@ -56,4 +56,9 @@ public abstract class SocketListenerContext : ListenerContext
     {
         await this.Stream.WriteAsync(buffer);
     }
+
+    public Socket? GetSocket()
+    {
+        return this.SocketClosed ? null : this._socket;
+    }
 }
