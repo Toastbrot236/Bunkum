@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Web;
 using Bunkum.Listener.Protocol;
 using JetBrains.Annotations;
 
@@ -10,7 +8,7 @@ namespace Bunkum.Core.Endpoints;
 public abstract class EndpointAttribute : Attribute
 {
     public string FullRoute { get; private set; }
-    private readonly Dictionary<int, RouteParam> _parameterIndexes = new();
+    public readonly Dictionary<int, RouteParam> ParameterIndices = new();
 
     public Method Method { get; protected set; }
     public string ContentType { get; protected set; }
@@ -19,18 +17,6 @@ public abstract class EndpointAttribute : Attribute
     /// The protocol this endpoint type is meant for.
     /// </summary>
     public abstract ProtocolInformation Protocol { get; }
-
-    private struct RouteParam
-    {
-        internal readonly int Skip;
-        internal readonly string Name;
-
-        internal RouteParam(int skip, string s)
-        {
-            this.Skip = skip;
-            this.Name = s;
-        }
-    }
     
     protected EndpointAttribute(string route) => this.GetRouteParameters(route);
 
@@ -65,7 +51,7 @@ public abstract class EndpointAttribute : Attribute
                 {
                     if (c == '}')
                     {
-                        this._parameterIndexes.Add(i, new RouteParam(j, param));
+                        this.ParameterIndices.Add(i, new RouteParam(j, param));
                         fullRoute += '_';
                         parsingParam = false;
                         continue;
@@ -89,51 +75,5 @@ public abstract class EndpointAttribute : Attribute
         }
 
         this.FullRoute = fullRoute;
-    }
-
-    [SuppressMessage("ReSharper", "ConvertIfStatementToReturnStatement")]
-    public bool UriMatchesRoute(Uri? uri, Method method, out Dictionary<string, string> parameters)
-    {
-        parameters = new Dictionary<string, string>();
-        if (uri == null) return false;
-        
-        string path = uri.AbsolutePath;
-
-        if (method != this.Method) return false;
-        if (this.FullRoute == path) return true;
-        if (this._parameterIndexes.Count != 0)
-        {
-            string fullRoute = string.Empty;
-            string[] routeSplit = path.Split('/');
-            for (int i = 0; i < routeSplit.Length; i++)
-            {
-                string s = routeSplit[i];
-                if (i != 0) fullRoute += '/';
-                
-                if (!this._parameterIndexes.TryGetValue(i, out RouteParam param))
-                {
-                    fullRoute += s;
-                }
-                else
-                {
-                    try
-                    {
-                        string paramValue = s.Substring(param.Skip);
-                        string paramStart = s.Substring(0, param.Skip);
-                        
-                        parameters.Add(param.Name, HttpUtility.UrlDecode(paramValue));
-                        fullRoute += paramStart + '_';
-                    }
-                    catch
-                    {
-                        fullRoute += '_';
-                    }
-                }
-            }
-
-            return fullRoute == this.FullRoute;
-        }
-        
-        return false;
     }
 }

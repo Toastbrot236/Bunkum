@@ -1,6 +1,7 @@
 using System.Net;
 using Bunkum.Core;
 using Bunkum.Core.Endpoints;
+using Bunkum.Core.Helpers;
 using Bunkum.Protocols.Http;
 using BunkumTests.HttpServer.Endpoints;
 
@@ -12,14 +13,16 @@ public class RoutingTests : ServerDependentTest
     public void IdentifiesFullRouteCorrectly()
     {
         EndpointAttribute attribute = new HttpEndpointAttribute("/1234/1234");
-        
         Assert.That(attribute.FullRoute, Is.EqualTo("/1234/1234"));
-        bool matches = attribute.UriMatchesRoute(new Uri("http://localhost/1234/1234"), HttpProtocolMethods.Get, out Dictionary<string, string> parameters);
+        
+        RequestedEndpoint requestedEndpoint = new(new Uri("http://localhost/1234/1234").AbsolutePath, HttpProtocolMethods.Get, HttpProtocolInformation.Http1_1);
+        OriginalEndpoint originalEndpoint = new(attribute);
+        bool matches = RequestHelper.UriMatchesRoute(requestedEndpoint, originalEndpoint);
         
         Assert.Multiple(() =>
         {
             Assert.That(matches, Is.True);
-            Assert.That(parameters, Is.Empty);
+            Assert.That(requestedEndpoint.RouteParameters, Is.Empty);
         });
     }
 
@@ -27,15 +30,17 @@ public class RoutingTests : ServerDependentTest
     public void IdentifiesRouteParametersCorrectly()
     {
         EndpointAttribute attribute = new HttpEndpointAttribute("/1234/1234/{param}");
-        
         Assert.That(attribute.FullRoute, Is.EqualTo("/1234/1234/_"));
         
-        bool matches = attribute.UriMatchesRoute(new Uri("http://localhost/1234/1234/asdf"), HttpProtocolMethods.Get, out Dictionary<string, string> parameters);
+        RequestedEndpoint requestedEndpoint = new(new Uri("http://localhost/1234/1234/asdf").AbsolutePath, HttpProtocolMethods.Get, HttpProtocolInformation.Http1_1);
+        OriginalEndpoint originalEndpoint = new(attribute);
+        bool matches = RequestHelper.UriMatchesRoute(requestedEndpoint, originalEndpoint);
+        
         Assert.Multiple(() =>
         {
             Assert.That(matches, Is.True);
-            Assert.That(parameters, Is.Not.Empty);
-            Assert.That(parameters["param"], Is.EqualTo("asdf"));
+            Assert.That(requestedEndpoint.RouteParameters, Is.Not.Empty);
+            Assert.That(requestedEndpoint.RouteParameters["param"], Is.EqualTo("asdf"));
         });
     }
     

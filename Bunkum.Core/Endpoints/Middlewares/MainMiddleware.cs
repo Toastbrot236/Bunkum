@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using Bunkum.Core.Configuration;
 using Bunkum.Core.Database;
 using Bunkum.Core.Extensions;
+using Bunkum.Core.Helpers;
 using Bunkum.Core.Responses;
 using Bunkum.Core.Services;
 using Bunkum.Listener.Protocol;
@@ -79,10 +80,9 @@ internal class MainMiddleware : IMiddleware
                 IEnumerable<EndpointAttribute> attributes = method.GetCustomAttributes<EndpointAttribute>();
                 foreach (EndpointAttribute attribute in attributes)
                 {
-                    if(attribute.Protocol.Name != context.Protocol.Name)
-                        continue;
-                        
-                    if (!attribute.UriMatchesRoute(context.Uri, context.Method, out Dictionary<string, string> parameters))
+                    RequestedEndpoint requestedEndpoint = new(context);
+                    OriginalEndpoint originalEndpoint = new(attribute);
+                    if (!RequestHelper.UriMatchesRoute(requestedEndpoint, originalEndpoint))
                         continue;
 
                     this._logger.LogTrace(BunkumCategory.Request, $"Handling request with {group.GetType().Name}.{method.Name}");
@@ -113,7 +113,7 @@ internal class MainMiddleware : IMiddleware
 
                     // Next, lets iterate through the method's arguments and add some based on what we find.
                     {
-                        Response? response = this.InjectParametersIntoEndpointInvocation(context, method, attribute, body, parameters, database, invokeList);
+                        Response? response = this.InjectParametersIntoEndpointInvocation(context, method, attribute, body, requestedEndpoint.RouteParameters, database, invokeList);
                         if (response != null) return response;
                     }
                     
