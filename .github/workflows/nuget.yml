@@ -25,7 +25,7 @@ jobs:
         run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
       - name: Set NUGET_SOURCE variable from tag
-        run: echo "NUGET_SOURCE=https://nuget.pkg.github.com/${{ github.repository }}/index.json" >> $GITHUB_ENV
+        run: echo "NUGET_SOURCE=https://nuget.pkg.github.com/${{ github.actor }}/index.json" >> $GITHUB_ENV
 
       - name: Set NUGET_USERNAME variable from tag
         run: echo "NUGET_USERNAME=${{ github.actor }}" >> $GITHUB_ENV
