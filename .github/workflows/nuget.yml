@@ -43,46 +43,46 @@ jobs:
         run: dotnet nuget add source --username ${NUGET_USERNAME} --password ${NUGET_API_KEY} --store-password-in-clear-text --name github "${NUGET_SOURCE}"
         
       - name: Upload Bunkum.Core
-        run: dotnet nuget push Bunkum.Core/bin/Release/Bunkum.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Core/bin/Release/Bunkum.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.Analyzers
-        run: dotnet nuget push Bunkum.Analyzers/bin/Release/Bunkum.Analyzers.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Analyzers/bin/Release/Bunkum.Analyzers.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.RealmDatabase
-        run: dotnet nuget push Bunkum.RealmDatabase/bin/Release/Bunkum.RealmDatabase.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.RealmDatabase/bin/Release/Bunkum.RealmDatabase.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.AutoDiscover
-        run: dotnet nuget push Bunkum.AutoDiscover/bin/Release/Bunkum.AutoDiscover.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.AutoDiscover/bin/Release/Bunkum.AutoDiscover.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.HealthChecks
-        run: dotnet nuget push Bunkum.HealthChecks/bin/Release/Bunkum.HealthChecks.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.HealthChecks/bin/Release/Bunkum.HealthChecks.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.Protocols.Http
-        run: dotnet nuget push Bunkum.Protocols.Http/bin/Release/Bunkum.Protocols.Http.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Protocols.Http/bin/Release/Bunkum.Protocols.Http.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.Protocols.Https
-        run: dotnet nuget push Bunkum.Protocols.Https/bin/Release/Bunkum.Protocols.Https.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Protocols.Https/bin/Release/Bunkum.Protocols.Https.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.Protocols.TlsSupport
-        run: dotnet nuget push Bunkum.Protocols.TlsSupport/bin/Release/Bunkum.Protocols.TlsSupport.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Protocols.TlsSupport/bin/Release/Bunkum.Protocols.TlsSupport.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.Protocols.Gopher
-        run: dotnet nuget push Bunkum.Protocols.Gopher/bin/Release/Bunkum.Protocols.Gopher.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Protocols.Gopher/bin/Release/Bunkum.Protocols.Gopher.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.Protocols.Gemini
-        run: dotnet nuget push Bunkum.Protocols.Gemini/bin/Release/Bunkum.Protocols.Gemini.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Protocols.Gemini/bin/Release/Bunkum.Protocols.Gemini.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.Listener
-        run: dotnet nuget push Bunkum.Listener/bin/Release/Bunkum.Listener.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Listener/bin/Release/Bunkum.Listener.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.Serialization.GopherToGemini
-        run: dotnet nuget push Bunkum.Serialization.GopherToGemini/bin/Release/Bunkum.Serialization.GopherToGemini.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.Serialization.GopherToGemini/bin/Release/Bunkum.Serialization.GopherToGemini.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.HealthChecks.RealmDatabase
-        run: dotnet nuget push Bunkum.HealthChecks.RealmDatabase/bin/Release/Bunkum.HealthChecks.RealmDatabase.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.HealthChecks.RealmDatabase/bin/Release/Bunkum.HealthChecks.RealmDatabase.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.DataStores.S3
-        run: dotnet nuget push Bunkum.DataStores.S3/bin/Release/Bunkum.DataStores.S3.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.DataStores.S3/bin/Release/Bunkum.DataStores.S3.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
 
       - name: Upload Bunkum.EntityFrameworkDatabase
-        run: dotnet nuget push Bunkum.EntityFrameworkDatabase/bin/Release/Bunkum.EntityFrameworkDatabase.${VERSION}.nupkg --source github
+        run: dotnet nuget push Bunkum.EntityFrameworkDatabase/bin/Release/Bunkum.EntityFrameworkDatabase.${VERSION}.nupkg --source github --api-key ${NUGET_API_KEY}
